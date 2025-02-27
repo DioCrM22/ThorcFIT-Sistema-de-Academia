@@ -1,0 +1,14 @@
+/* static/style.css */
+body {
+    background: #f0f0f0;
+    font-family: 'Comic Sans MS', cursive, sans-serif; /* Você pode trocar por outra fonte se preferir */
+  }
+  
+  .card {
+    border-radius: 15px; /* Altere para modificar o arredondamento dos cards */
+  }
+  
+  .btn {
+    font-size: 16px; /* Ajuste o tamanho da fonte dos botões */
+  }
+  

@@ -1,0 +1,91 @@
+<!-- templates/home.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Home - Cartoon Login</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    /* Você pode ajustar as dimensões da foto de perfil conforme sua preferência */
+    .profile-pic {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Cartoon Login</a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('logout') }}">Sair</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <!-- Abas para Dashboard e Perfil -->
+    <ul class="nav nav-tabs" id="dashboardTabs" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#dashboard" role="tab" aria-controls="dashboard" aria-selected="true">Dashboard</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Perfil</a>
+      </li>
+    </ul>
+    <div class="tab-content" id="dashboardTabsContent">
+      <!-- Conteúdo do Dashboard -->
+      <div class="tab-pane fade show active" id="dashboard" role="tabpanel" aria-labelledby="home-tab">
+        <div class="mt-4">
+          <h4>Bem-vindo, {{ user.name or user.email }}!</h4>
+          <p>Esta é a sua área de dashboard.</p>
+        </div>
+      </div>
+      <!-- Conteúdo do Perfil -->
+      <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+        <div class="mt-4">
+          <h4>Perfil</h4>
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}" role="alert">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+          <div class="text-center">
+            {% if user.profile_pic %}
+              <img src="{{ url_for('static', filename=user.profile_pic) }}" alt="Profile Picture" class="profile-pic">
+            {% else %}
+              <img src="{{ url_for('static', filename='images/default_profile.png') }}" alt="Profile Picture" class="profile-pic">
+            {% endif %}
+          </div>
+          <form method="POST" action="{{ url_for('update_profile') }}" enctype="multipart/form-data">
+            <div class="form-group">
+              <label for="name">Nome</label>
+              <input type="text" id="name" name="name" class="form-control" value="{{ user.name }}">
+            </div>
+            <div class="form-group">
+              <label for="profile_pic">Atualizar Foto de Perfil</label>
+              <input type="file" id="profile_pic" name="profile_pic" class="form-control-file">
+            </div>
+            <button type="submit" class="btn btn-success">Atualizar Perfil</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
